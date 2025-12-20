@@ -9,9 +9,14 @@ readme = "README.md"
 python = "^3.12"
 fastapi = "^0.124.2"
 uvicorn = {extras = ["standard"], version = "^0.38.0"}
-torch = "^2.2"
+torch = {version = "2.2.2", source = "pytorch-cpu"}
 numpy = "^1.26"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
