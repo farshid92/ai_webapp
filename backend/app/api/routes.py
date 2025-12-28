@@ -1,4 +1,4 @@
-from app.schemas.predict import PredictRequest, PredictResponse
+from app.models.schemas import PredictRequest, PredictResponse
 from app.ml.registry import get_model
 from app.ml.inference import predict
 
@@ -7,3 +7,4 @@ def predict_endpoint(req: PredictRequest):
     model = get_model()
     result = predict(model, req.inputs)
     return PredictResponse(result=result)
+backend/app/models

@@ -1,8 +1,11 @@
 import torch
-import numpy as np
+from app.ml.registry import get_model
 from app.ml.loader import DEVICE
 
-def predict(model, inputs: list[float]) -> float:
+
+def predict(model_name: str, inputs: list[float]) -> float:
+    model = get_model(model_name)
+
     x = torch.tensor(inputs, dtype=torch.float32).unsqueeze(0)
     x = x.to(DEVICE)
 
