@@ -2,10 +2,9 @@ import torch
 from app.ml.model import RegressionNet
 from pathlib import Path
 
-# Resolve project root: /app/app
-ROOT = Path(__file__).resolve().parents[2]
-
-CHECKPOINT_DIR = ROOT / "ml" / "checkpoints"
+# Resolve checkpoint directory - relative to app/ml/loader.py location
+# This script is in app/scripts/, so parents[1] is app/
+CHECKPOINT_DIR = Path(__file__).resolve().parent.parent / "ml" / "checkpoints"
 CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
 
 model = RegressionNet(input_dim=3)

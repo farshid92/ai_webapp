@@ -10,7 +10,7 @@ class RegressionNet(nn.Module):
     - GA-optimized architectures
     """
 
-    def __init__(self, input_dim: int = 2):
+    def __init__(self, input_dim: int = 3):
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(input_dim, 64),
@@ -22,3 +22,6 @@ class RegressionNet(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.net(x)
+
+    def predict(self, x: torch.Tensor) -> torch.Tensor:
+        return self.forward(x)

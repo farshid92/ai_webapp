@@ -1,8 +1,16 @@
+from typing import List
 from app.models.dummy_model import DummyModel
+
 
 class PredictionService:
     def __init__(self):
-        self.model = DummyModel()
+        self.models = {
+            "base": DummyModel()
+        }
 
-    def predict(self, values: list[float]) -> float:
-        return self.model.predict(values)
+    def predict(self, inputs: List[float], model_name: str) -> float:
+        if model_name not in self.models:
+            raise ValueError(f"Model '{model_name}' not found")
+
+        model = self.models[model_name]
+        return model.predict(inputs)
