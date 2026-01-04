@@ -11,8 +11,14 @@ fastapi = "^0.124.2"
 python-multipart = "^0.0.6"
 uvicorn = {extras = ["standard"], version = "^0.38.0"}
 torch = {version = "2.2.2", source = "pytorch-cpu"}
+torchvision = "^0.17.2"
 numpy = "^1.26"
 pydantic = "^2.0.0"
+pillow = "^10.0.0"
+opencv-python-headless = "^4.8.0"
+matplotlib = "^3.8.0"
+scikit-image = "^0.22.0"
+deap = "^1.4.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"

@@ -1,22 +1,36 @@
-from typing import Dict
+from typing import Dict, Union
 from app.ml.loader import load_model
 from app.ml.model import RegressionNet
+from app.ml.unet import UNet
+from app.ml.base import BaseModel
 
 
 class ModelRegistry:
     def __init__(self):
-        self.models: Dict[str, RegressionNet] = {}
+        self.models: Dict[str, BaseModel] = {}
         self._loaded = False
 
     def load(self):
         if self._loaded:
             return
-        # Load model with default input_dim=4 to match common use case
-        # The model will work with any input_dim, but we need to match saved checkpoint
+        # Load regression model
         self.models["base"] = load_model(input_dim=4)
+        
+        # Load U-Net model (create if checkpoint doesn't exist)
+        try:
+            # Try to load U-Net checkpoint
+            unet = UNet(in_channels=3, out_channels=1)
+            unet.eval()
+            self.models["unet"] = unet
+        except Exception:
+            # Create default U-Net if loading fails
+            unet = UNet(in_channels=3, out_channels=1)
+            unet.eval()
+            self.models["unet"] = unet
+        
         self._loaded = True
 
-    def get(self, name: str = "base") -> RegressionNet:
+    def get(self, name: str = "base") -> BaseModel:
         if not self._loaded:
             self.load()
         if name not in self.models:
@@ -51,5 +65,5 @@ def get_registry() -> ModelRegistry:
 
 
 
-def get_model(name: str = "base") -> RegressionNet:
+def get_model(name: str = "base") -> BaseModel:
     return get_registry().get(name)

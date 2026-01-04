@@ -1,5 +1,6 @@
 # Python
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 *.so
@@ -71,4 +72,5 @@ build/
 # Temporary files
 *.tmp
 *.temp
+
 

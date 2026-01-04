@@ -8,12 +8,16 @@ This application provides a complete ML model serving infrastructure with:
 - **RESTful API** for model inference using FastAPI
 - **Modern React Frontend** for interactive model predictions
 - **PyTorch-based ML Models** with flexible architecture
+- **Computer Vision**: U-Net for image segmentation
+- **Ensemble Learning**: Multiple model combination strategies
+- **Genetic Algorithms**: Hyperparameter optimization
 - **Comprehensive Testing** (84% backend coverage, full frontend tests)
 - **Docker Support** for containerized deployment
 - **Production-ready** error handling and validation
 
 ## 🚀 Features
 
+### Core Features
 - **ML Model Serving**: Deploy and serve PyTorch models via REST API
 - **Interactive UI**: React-based frontend for real-time predictions
 - **Model Registry**: Manage multiple models with versioning support
@@ -23,15 +27,27 @@ This application provides a complete ML model serving infrastructure with:
 - **CORS Support**: Configured for cross-origin requests
 - **Hot Reload**: Development-friendly with auto-reload
 
+### Advanced ML Features ⭐
+- **U-Net Segmentation**: Image segmentation using U-Net architecture
+- **Ensemble Learning**: Combine multiple models (voting, averaging, weighted)
+- **Genetic Algorithm**: Hyperparameter optimization using evolutionary algorithms
+- **Image Processing**: Complete CV pipeline (preprocessing, post-processing, visualization)
+- **Uncertainty Estimation**: Model prediction confidence metrics
+- **Model Comparison**: Side-by-side performance evaluation
+
 ## 🛠️ Tech Stack
 
 ### Backend
 - **FastAPI** - Modern Python web framework
 - **PyTorch** - Deep learning framework
+- **Torchvision** - Computer vision utilities
 - **Pydantic** - Data validation
 - **Poetry** - Dependency management
 - **Pytest** - Testing framework
 - **Uvicorn** - ASGI server
+- **Pillow/OpenCV** - Image processing
+- **DEAP** - Genetic algorithm library
+- **Matplotlib** - Visualization
 
 ### Frontend
 - **React 19** - UI library
@@ -140,29 +156,44 @@ See [TESTING_GUIDE.md](./TESTING_GUIDE.md) for detailed testing documentation.
 
 ## 📡 API Endpoints
 
-### Health Check
+### Core Endpoints
+- `GET /health` - Health check
+- `GET /api/models/` - List available models
+- `GET /api/models/{model_name}` - Get model information
+- `POST /api/predict/` - Regression prediction
+
+### Computer Vision ⭐
+- `POST /api/segmentation/predict` - Image segmentation (single image)
+- `POST /api/segmentation/batch` - Batch image segmentation
+
+### Ensemble Learning ⭐
+- `POST /api/ensemble/predict` - Ensemble prediction
+- `POST /api/ensemble/compare` - Compare multiple models
+- `POST /api/ensemble/predict-with-uncertainty` - Prediction with confidence
+
+### Optimization ⭐
+- `POST /api/optimization/optimize` - Genetic algorithm hyperparameter optimization
+- `GET /api/optimization/example-bounds` - Example parameter bounds
+
+**Example - Image Segmentation**:
 ```bash
-GET /health
+POST /api/segmentation/predict
+Content-Type: multipart/form-data
+
+file: <image_file>
+model_name: "unet"
+threshold: 0.5
+overlay: true
 ```
 
-### List Models
+**Example - Ensemble Prediction**:
 ```bash
-GET /api/models/
-```
-
-### Model Info
-```bash
-GET /api/models/{model_name}
-```
-
-### Prediction
-```bash
-POST /api/predict/
+POST /api/ensemble/predict
 Content-Type: application/json
 
 {
   "inputs": [1.0, 2.0, 3.0, 4.0],
-  "model_name": "base"
+  "model_names": ["base", "unet"]
 }
 ```
 
@@ -228,9 +259,10 @@ Interactive API documentation available at `/docs` when backend is running.
 - Dependencies managed via npm
 - Vite proxy configured for `/api` → `http://localhost:8000`
 
-## 📊 Model Architecture
+## 📊 Model Architectures
 
-The default model (`RegressionNet`) is a feedforward neural network:
+### RegressionNet (Default)
+Feedforward neural network for regression tasks:
 
 ```
 Input (4 features)
@@ -244,7 +276,31 @@ Linear(64 → 1)
 Output (prediction)
 ```
 
-Models can be easily extended or replaced in `backend/app/ml/model.py`.
+### U-Net (Image Segmentation) ⭐
+Encoder-decoder architecture with skip connections:
+
+```
+Input Image (3 channels, 256x256)
+    ↓
+Encoder Path (Downsampling)
+    ├─ Conv → BN → ReLU → Conv → BN → ReLU
+    ├─ MaxPool(2x2)
+    ├─ [Repeat with increasing features: 64→128→256→512]
+    ↓
+Decoder Path (Upsampling)
+    ├─ TransposeConv → Concatenate Skip Connection
+    ├─ Conv → BN → ReLU → Conv → BN → ReLU
+    ├─ [Repeat with decreasing features: 512→256→128→64]
+    ↓
+Output Mask (1 channel, 256x256)
+```
+
+**Key Features**:
+- Skip connections preserve fine-grained details
+- Symmetric encoder-decoder structure
+- Variants: Standard, Small, Large
+
+Models can be easily extended or replaced in `backend/app/ml/`.
 
 ## 🚢 Deployment
 
@@ -285,32 +341,45 @@ See [LICENSE](./LICENSE) file for details.
 ## 🎓 Academic/Research Use
 
 This project demonstrates:
+- **Computer Vision**: U-Net segmentation, image processing pipelines
+- **Advanced ML**: Ensemble learning, genetic algorithms, optimization
 - **ML Model Deployment**: Production-ready model serving
 - **Software Engineering**: Clean architecture, testing, documentation
 - **Full-Stack Development**: Modern web technologies
 - **DevOps Practices**: Docker, CI/CD ready
 
-Suitable for:
-- Computer Vision research projects
-- ML model deployment studies
-- Full-stack development portfolios
-- Software engineering demonstrations
+**Perfect for**:
+- Computer Vision PhD applications
+- ML Engineer positions
+- Research project portfolios
+- Full-stack ML development showcases
+
+**Highlights**:
+- ✅ U-Net implementation (classic CV architecture)
+- ✅ Ensemble learning methods
+- ✅ Genetic algorithm optimization
+- ✅ Production deployment
+- ✅ Comprehensive testing (84% coverage)
 
 ## 🔮 Future Enhancements
 
+- [x] U-Net image segmentation
+- [x] Ensemble learning
+- [x] Genetic algorithm optimization
 - [ ] Model training pipeline
 - [ ] Model versioning system
-- [ ] Batch prediction support
+- [ ] Frontend UI for image upload/visualization
+- [ ] Performance metrics (IoU, Dice coefficient)
+- [ ] Real dataset training
 - [ ] Authentication and authorization
 - [ ] Model performance monitoring
-- [ ] A/B testing framework
 - [ ] CI/CD pipeline
 - [ ] Kubernetes deployment
 - [ ] Model explainability features
 
 ## 👤 Author
 
-[Your Name]
+[Farshid Cheraghchian]
 
 ## 🙏 Acknowledgments
 
